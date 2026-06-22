@@ -119,27 +119,27 @@ async function logoutUserController(req, res) {
     })
 }
 
-// /**
-//  * @name getMeController
-//  * @description get the current logged in user details.
-//  * @access private
-//  */
-// async function getMeController(req, res) {
+/**
+ * @name getMeController
+ * @description get the current logged in user details.
+ * @access private
+ */
+async function getMeController(req, res) {
 
-//     const user = await userModel.findById(req.user.id)
+    const user = await userModel.findById(req.user.id) //req.user wasnt existing earlier, we did it by middleware
 
 
 
-//     res.status(200).json({
-//         message: "User details fetched successfully",
-//         user: {
-//             id: user._id,
-//             username: user.username,
-//             email: user.email
-//         }
-//     })
+    res.status(200).json({
+        message: "User details fetched successfully",
+        user: {
+            id: user._id,
+            username: user.username,
+            email: user.email
+        }
+    })
 
-// }
+}
 
 
 
@@ -147,5 +147,5 @@ module.exports = {
     registerUserController,
     loginUserController,
     logoutUserController,
-    // getMeController
+    getMeController
 }

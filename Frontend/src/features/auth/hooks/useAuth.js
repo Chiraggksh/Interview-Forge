@@ -46,12 +46,12 @@ export const useAuth = () => {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => { //so that after reloading it doesnt fall back and doesnt verify protected component
 
         const getAndSetUser = async () => {
             try {
 
-                const data = await getMe()
+                const data = await getMe() //as now it is getting data from cookies not from states, so even after reloading it wont go
                 setUser(data.user)
             } catch (err) { } finally {
                 setLoading(false)

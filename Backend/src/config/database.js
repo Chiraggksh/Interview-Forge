@@ -10,6 +10,7 @@ async function connectToDB() {
         console.log("Connected to Database")
     }
     catch (err) {
+        // console.log("Bhaii mongo me dikkt arri h")
         console.log(err)
     }
 }

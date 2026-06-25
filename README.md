@@ -22,32 +22,6 @@
 
 ---
 
-## Table of Contents
-
-- [About the Project](#-about-the-project)
-- [Demo & Workflow](#-demo--workflow)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture Overview](#-architecture-overview)
-- [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Environment Variables](#environment-variables)
-- [Project Structure](#-project-structure)
-- [How It Works](#-how-it-works)
-  - [Authentication Flow](#1-authentication-flow)
-  - [AI Analysis Pipeline](#2-ai-analysis-pipeline)
-  - [Structured Output with Zod](#3-structured-output-with-zod)
-  - [PDF Resume Generation](#4-pdf-resume-generation)
-  - [Session History](#5-session-history)
-- [API Reference](#-api-reference)
-- [Screenshots](#-screenshots)
-- [Roadmap](#-future-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
-
----
-
 ## About the Project
 
 **InterviewForge** is a full stack MERN application that acts as your personal AI interview coach. You feed it a job description, your resume, and a short self-description and boom! it gives you back a complete, actionable prep kit:
@@ -63,12 +37,12 @@ All sessions are **persisted in MongoDB**, so you can revisit any previous prep 
 
 ---
 
-## 🎬 Demo & Workflow
+## Demo & Workflow
 
 
 
 <p align="center">
-  <a href="YOUR_YOUTUBE_LINK_HERE">
+  <a href="https://youtu.be/BN4n1Mu8o0U">
     <img src="./assets/demo-thumbnail.png" alt="Watch Full Demo" width="80%" />
     <br/>
     <strong>▶ Watch Full Workflow Demo (2 min)</strong>
@@ -79,41 +53,41 @@ All sessions are **persisted in MongoDB**, so you can revisit any previous prep 
 
 ## Features
 
-### Authentication
+### 1. Authentication
 - Secure **JWT-based authentication** with HTTP-only cookies
 - Register / Login / Logout with full session management
 - Protected routes : all analysis features are wrapped behind auth
 
-### AI-Powered Interview Analysis
+### 2. AI-Powered Interview Analysis
 - Paste any **job description** + your **resume** + a short **self-description**
 - Powered by **Google Gemini 3.0 Flash Preview** for fast, high-quality generation
 - Outputs are **schema-validated** using Zod before being stored or displayed — no hallucinated or malformed JSON ever reaches your frontend
 
-### Match Score & Skill Gap Analysis
+### 3. Match Score & Skill Gap Analysis
 - Percentage-based **compatibility score** between your profile and the role
 - Detailed list of **skills to learn or brush up on** before the interview based on priority
 
-### Interview Question Bank
+### 4. Interview Question Bank
 - **Technical questions** scoped to the specific tech stack and role requirements
 - **Behavioural questions** tailored to your experience and the role's soft-skill demands
 
-### Personalised 4–5 Day Prep Roadmap
+### 5. Personalised 4–5 Day Prep Roadmap
 - Day-by-day breakdown of what to study, practice, and revise
 - Structured to be realistic and achievable before a typical interview timeline
 
-### Persistent Session History
+### 6. Persistent Session History
 - Every analysis is **saved to MongoDB** under your account
 - Click any past session from the history panel — all inputs and results are instantly restored
 - No duplicate effort — pick up exactly where you left off
 
-### AI Resume Generator (PDF)
+### 7. AI Resume Generator (PDF)
 - Input your details and let the app build a clean, structured resume
 - Uses **Puppeteer** to render an HTML template and export a professional **PDF**
 - Download-ready in seconds
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -127,9 +101,9 @@ All sessions are **persisted in MongoDB**, so you can revisit any previous prep 
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
-<!-- 📌 Replace with your actual architecture diagram at assets/architecture.png -->
+
 <p align="center">
   <img src="./assets/architecture.png" alt="InterviewForge Architecture" width="85%" />
 </p>
@@ -233,11 +207,11 @@ InterviewForge/
 
 ---
 
-## 🔍 How It Works
+## How It Works
 
 ### 1. Authentication Flow
 
-<!-- 📌 Place gif-auth.gif here -->
+
 <p align="center">
   <img src="./assets/gif-auth.gif" alt="Auth Flow" width="70%" />
 </p>
@@ -251,7 +225,7 @@ InterviewForge/
 
 ### 2. AI Analysis Pipeline
 
-<!-- 📌 Place gif-analysis.gif here -->
+
 <p align="center">
   <img src="./assets/gif-analysis.gif" alt="AI Analysis" width="70%" />
 </p>
@@ -273,23 +247,42 @@ The core of PrepIQ's reliability is its use of **Zod** for schema-first AI outpu
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
-const analysisSchema = z.object({
-  matchScore: z.number().min(0).max(100),
-  skillsNeeded: z.array(z.string()),
-  technicalQuestions: z.array(z.string()),
-  behaviouralQuestions: z.array(z.string()),
-  roadmap: z.array(
-    z.object({
-      day: z.number(),
-      title: z.string(),
-      tasks: z.array(z.string()),
-    })
-  ),
-});
+const interviewReportSchema = z.object({
+    matchScore: z.number().describe("A score between 0 and 100 indicating how well the candidate's profile matches the job describe"),
+    technicalQuestions: z.array(z.object({
+        question: z.string().describe("The technical question can be asked in the interview"),
+        intention: z.string().describe("The intention of interviewer behind asking this question"),
+        answer: z.string().describe("How to answer this question, what points to cover, what approach to take etc.")
+    })).describe("Technical questions that can be asked in the interview along with their intention and how to answer them"),
+    behavioralQuestions: z.array(z.object({
+        question: z.string().describe("The behavioual question can be asked in the interview"),
+        intention: z.string().describe("The intention of interviewer behind asking this question"),
+        answer: z.string().describe("How to answer this question, what points to cover, what approach to take etc.")
+    })).describe("Behavioral questions that can be asked in the interview along with their intention and how to answer them"),
+    skillGaps: z.array(z.object({
+        skill: z.string().describe("The skill which the candidate is lacking"),
+        severity: z.enum([ "low", "medium", "high" ]).describe("The severity of this skill gap, i.e. how important is this skill for the job and how much it can impact the candidate's chances")
+    })).describe("List of skill gaps in the candidate's profile along with their severity"),
+    preparationPlan: z.array(z.object({
+        day: z.number().describe("The day number in the preparation plan, starting from 1"),
+        focus: z.string().describe("The main focus of this day in the preparation plan, e.g. data structures, system design, mock interviews etc."),
+        tasks: z.array(z.string()).describe("List of tasks to be done on this day to follow the preparation plan, e.g. read a specific book or article, solve a set of problems, watch a video etc.")
+    })).describe("A day-wise preparation plan for the candidate to follow in order to prepare for the interview effectively"),
+    title: z.string().describe("The title of the job for which the interview report is generated"),
+})
 
 // Convert Zod schema → JSON Schema and inject into Gemini prompt
-export const jsonSchema = zodToJsonSchema(analysisSchema, "analysisSchema");
-export { analysisSchema };
+const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        // model:"gemini-2.5-flash",
+        // model:"gemini-2.5-pro",
+        // model: "gemini-2.5-flash-lite",
+        contents: prompt,
+        config: {
+            responseMimeType: "application/json",
+            responseSchema: zodToJsonSchema(interviewReportSchema),
+        }
+    })
 ```
 
 The JSON schema is embedded in the Gemini prompt, instructing the model to return output that matches it exactly. The response is then parsed and validated with `.parse()` before any further processing — guaranteeing type-safe, predictable data on every call.
@@ -298,12 +291,11 @@ The JSON schema is embedded in the Gemini prompt, instructing the model to retur
 
 ### 4. PDF Resume Generation
 
-<!-- 📌 Place gif-resume.gif here -->
 <p align="center">
   <img src="./assets/gif-resume.gif" alt="Resume PDF" width="70%" />
 </p>
 
-1. User fills in their details on the Resume page
+1. User clicks on generate resume button
 2. Backend renders a styled **HTML template** with the user's data
 3. **Puppeteer** launches a headless browser, loads the HTML, and exports it as a PDF
 4. The PDF buffer is streamed back to the client as a downloadable file
@@ -321,11 +313,6 @@ return pdfBuffer;
 ---
 
 ### 5. Session History
-
-<!-- 📌 Place gif-history.gif here -->
-<p align="center">
-  <img src="./assets/gif-history.gif" alt="Session History" width="70%" />
-</p>
 
 Every time you run an analysis, a **Session document** is saved in MongoDB:
 
@@ -351,23 +338,59 @@ The history panel lists all your past sessions. Clicking one **pre-populates the
 
 ---
 
-## 📡 API Reference
+## API Reference
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| `POST` | `/api/auth/register` | ❌ | Register a new user |
-| `POST` | `/api/auth/login` | ❌ | Login + set JWT cookie |
-| `POST` | `/api/auth/logout` | ✅ | Clear JWT cookie |
-| `POST` | `/api/analysis` | ✅ | Run AI analysis |
-| `GET` | `/api/history` | ✅ | Get all sessions for user |
-| `GET` | `/api/history/:id` | ✅ | Get a specific session |
-| `POST` | `/api/resume/generate` | ✅ | Generate + return PDF resume |
+### Authentication Routes
+
+| Method | Endpoint             | Access  | Description                                   |
+| ------ | -------------------- | ------- | --------------------------------------------- |
+| POST   | `/api/auth/register` | Public  | Register a new user account                   |
+| POST   | `/api/auth/login`    | Public  | Authenticate user and set JWT cookie          |
+| GET    | `/api/auth/logout`   | Public  | Logout user and blacklist active token        |
+| GET    | `/api/auth/get-me`   | Private | Retrieve currently authenticated user details |
 
 ---
 
-## 📸 Screenshots
+### Interview Analysis Routes
 
-<!-- 📌 Use a 2-column grid for screenshots -->
+| Method | Endpoint                                       | Access  | Description                                                                                 |
+| ------ | ---------------------------------------------- | ------- | ------------------------------------------------------------------------------------------- |
+| POST   | `/api/interview/`                              | Private | Generate an AI-powered interview report using resume, job description, and self-description |
+| GET    | `/api/interview/`                              | Private | Retrieve all interview reports belonging to the logged-in user                              |
+| GET    | `/api/interview/report/:interviewId`           | Private | Retrieve a specific interview report by ID                                                  |
+| POST   | `/api/interview/resume/pdf/:interviewReportId` | Private | Generate and download a PDF resume based on an interview report                             |
+
+---
+
+### Request Flow
+
+```text
+Resume PDF
+     +
+Job Description
+     +
+Self Description
+     │
+     ▼
+POST /api/interview/
+     │
+     ▼
+Gemini AI Analysis
+     │
+     ▼
+Zod Schema Validation
+     │
+     ▼
+MongoDB Storage
+     │
+     ▼
+Interview Report
+```
+
+
+---
+
+## Screenshots
 
 <table>
   <tr>
@@ -398,7 +421,7 @@ The history panel lists all your past sessions. Clicking one **pre-populates the
 
 ---
 
-## 🔮 Future Roadmap
+## Future Roadmap
 
 - [ ] LinkedIn profile import instead of manual resume paste
 - [ ] Mock interview mode with timed responses and AI feedback
@@ -409,7 +432,7 @@ The history panel lists all your past sessions. Clicking one **pre-populates the
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! If you'd like to improve PrepIQ:
 
@@ -423,15 +446,10 @@ Please follow the existing code style and add comments where the logic is non-tr
 
 ---
 
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
 
 <div align="center">
 
-Made with ❤️ and way too much Gemini API quota
+Made with ❤️ and way too much Gemini API quota xd
 
 **[⬆ Back to top](#-prepiq--ai-powered-interview-intelligence-platform)**
 

@@ -48,16 +48,16 @@
 
 ---
 
-## 🎯 About the Project
+## About the Project
 
-**PrepIQ** is a full-stack MERN application that acts as your personal AI interview coach. You feed it a job description, your resume, and a short self-description — and it gives you back a complete, actionable prep kit:
+**InterviewForge** is a full stack MERN application that acts as your personal AI interview coach. You feed it a job description, your resume, and a short self-description and boom! it gives you back a complete, actionable prep kit:
 
-- 📊 A **match score** between your profile and the role
-- 🛠️ A list of **skills you need to acquire or strengthen**
-- ❓ Curated **technical interview questions** tailored to the role
-- 🤝 **Behavioural questions** based on your background
-- 🗺️ A **4–5 day personalised prep roadmap** with daily goals
-- 📄 A **generated PDF resume** from your details — ready to submit
+-  A **match score** between your profile and the role
+-  A list of **skills you need to acquire or strengthen** based on priority
+-  Curated **technical interview questions** tailored to the role
+-  **Behavioural questions** based on your background
+-  A **4–5 day personalised prep roadmap** with daily goals
+-  An ATS friendly **generated PDF resume** from your details 
 
 All sessions are **persisted in MongoDB**, so you can revisit any previous prep session with a single click — no re-entry needed.
 
@@ -65,37 +65,7 @@ All sessions are **persisted in MongoDB**, so you can revisit any previous prep 
 
 ## 🎬 Demo & Workflow
 
-<!-- 
-  📌 MEDIA PLACEMENT GUIDE
-  ─────────────────────────────────────────────────────────────────────────
-  1. HERO BANNER (top of README)
-     → assets/banner.png  |  1280×640px  |  app name + tagline + UI preview
-     
-  2. FULL WORKFLOW VIDEO (below this section)
-     → Record a 2–3 min screen recording covering:
-        Login → Input form → AI result cards → Roadmap → History → Resume PDF
-     → Host on YouTube (unlisted) and embed with the thumbnail trick below
-     → assets/demo-thumbnail.png  |  1280×720px  |  screenshot of the video
 
-  3. FEATURE GIFS (one per major feature section further below)
-     → assets/gif-auth.gif        — login / register flow (5–8 sec)
-     → assets/gif-analysis.gif    — filling the form + results loading (10–15 sec)
-     → assets/gif-roadmap.gif     — scrolling through the 4-5 day roadmap (5–8 sec)
-     → assets/gif-history.gif     — clicking a past session to restore it (5–8 sec)
-     → assets/gif-resume.gif      — resume generation + PDF download (5–8 sec)
-
-  4. SCREENSHOT GRID (Screenshots section near the bottom)
-     → assets/ss-dashboard.png    — main dashboard / landing after login
-     → assets/ss-form.png         — input form (JD + resume + self-description)
-     → assets/ss-results.png      — AI result cards (match score, skills, Qs)
-     → assets/ss-roadmap.png      — 4-5 day roadmap view
-     → assets/ss-history.png      — previous sessions sidebar / list
-     → assets/ss-resume.png       — generated resume preview
-
-  5. ARCHITECTURE DIAGRAM
-     → assets/architecture.png    — system design diagram (draw on Excalidraw / Figma)
-  ─────────────────────────────────────────────────────────────────────────
--->
 
 <p align="center">
   <a href="YOUR_YOUTUBE_LINK_HERE">
@@ -107,36 +77,36 @@ All sessions are **persisted in MongoDB**, so you can revisit any previous prep 
 
 ---
 
-## ✨ Features
+## Features
 
-### 🔐 Authentication
+### Authentication
 - Secure **JWT-based authentication** with HTTP-only cookies
 - Register / Login / Logout with full session management
-- Protected routes — all analysis features are gated behind auth
+- Protected routes : all analysis features are wrapped behind auth
 
-### 🤖 AI-Powered Interview Analysis
+### AI-Powered Interview Analysis
 - Paste any **job description** + your **resume** + a short **self-description**
-- Powered by **Google Gemini 2.0 Flash Preview** for fast, high-quality generation
+- Powered by **Google Gemini 3.0 Flash Preview** for fast, high-quality generation
 - Outputs are **schema-validated** using Zod before being stored or displayed — no hallucinated or malformed JSON ever reaches your frontend
 
-### 📊 Match Score & Skill Gap Analysis
+### Match Score & Skill Gap Analysis
 - Percentage-based **compatibility score** between your profile and the role
-- Detailed list of **skills to learn or brush up on** before the interview
+- Detailed list of **skills to learn or brush up on** before the interview based on priority
 
-### ❓ Interview Question Bank
+### Interview Question Bank
 - **Technical questions** scoped to the specific tech stack and role requirements
 - **Behavioural questions** tailored to your experience and the role's soft-skill demands
 
-### 🗺️ Personalised 4–5 Day Prep Roadmap
+### Personalised 4–5 Day Prep Roadmap
 - Day-by-day breakdown of what to study, practice, and revise
 - Structured to be realistic and achievable before a typical interview timeline
 
-### 📁 Persistent Session History
+### Persistent Session History
 - Every analysis is **saved to MongoDB** under your account
 - Click any past session from the history panel — all inputs and results are instantly restored
 - No duplicate effort — pick up exactly where you left off
 
-### 📄 AI Resume Generator (PDF)
+### AI Resume Generator (PDF)
 - Input your details and let the app build a clean, structured resume
 - Uses **Puppeteer** to render an HTML template and export a professional **PDF**
 - Download-ready in seconds
@@ -147,14 +117,13 @@ All sessions are **persisted in MongoDB**, so you can revisit any previous prep 
 
 | Layer | Technology |
 |---|---|
-| **Frontend** | React, React Router, Axios, TailwindCSS |
+| **Frontend** | React, React Router, Axios, SCSS |
 | **Backend** | Node.js, Express.js |
 | **Database** | MongoDB Atlas + Mongoose |
-| **AI Model** | Google Gemini 2.0 Flash Preview |
+| **AI Model** | Google Gemini 3.0 Flash Preview |
 | **Schema Validation** | Zod + `zod-to-json-schema` |
 | **Auth** | JWT + HTTP-only Cookies |
 | **PDF Generation** | Puppeteer |
-| **Deployment** | (e.g. Vercel / Render / Railway) |
 
 ---
 
@@ -162,7 +131,10 @@ All sessions are **persisted in MongoDB**, so you can revisit any previous prep 
 
 <!-- 📌 Replace with your actual architecture diagram at assets/architecture.png -->
 <p align="center">
-  <img src="./assets/architecture.png" alt="PrepIQ Architecture" width="85%" />
+  <img src="./assets/architecture.png" alt="InterviewForge Architecture" width="85%" />
+</p>
+<p align="center">
+  <img src="./assets/ermodel.png" alt="InterviewForge DB Model" width="85%" />
 </p>
 
 The high-level flow:
@@ -183,106 +155,77 @@ React Frontend  ──── Axios ────▶  Express REST API
 
 ---
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js `v18+`
-- npm or yarn
-- MongoDB Atlas URI
-- Google Gemini API Key
-
-### Installation
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/yourusername/prepiq.git
-cd prepiq
-
-# 2. Install backend dependencies
-cd server
-npm install
-
-# 3. Install frontend dependencies
-cd ../client
-npm install
-```
-
-### Environment Variables
-
-Create a `.env` file inside the `/server` directory:
-
-```env
-# Server
-PORT=5000
-NODE_ENV=development
-
-# MongoDB
-MONGO_URI=your_mongodb_atlas_connection_string
-
-# JWT
-JWT_SECRET=your_super_secret_jwt_key
-JWT_EXPIRES_IN=7d
-
-# Cookies
-COOKIE_SECRET=your_cookie_secret
-
-# Google Gemini
-GEMINI_API_KEY=your_gemini_api_key
-```
-
-### Running Locally
-
-```bash
-# Start the backend (from /server)
-npm run dev
-
-# Start the frontend (from /client)
-npm run dev
-```
-
-The app will be running at `http://localhost:5173` (Vite default).
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-prepiq/
-├── client/                     # React frontend
-│   ├── src/
-│   │   ├── components/         # Reusable UI components
-│   │   ├── pages/              # Route-level pages
-│   │   │   ├── Login.jsx
-│   │   │   ├── Register.jsx
-│   │   │   ├── Dashboard.jsx   # Main analysis page
-│   │   │   ├── History.jsx     # Previous sessions
-│   │   │   └── Resume.jsx      # Resume generator
-│   │   ├── context/            # Auth context / global state
-│   │   └── utils/              # Axios config, helpers
-│   └── package.json
+InterviewForge/
 │
-├── server/                     # Express backend
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── analysisController.js
-│   │   ├── historyController.js
-│   │   └── resumeController.js
-│   ├── models/
-│   │   ├── User.js
-│   │   └── Session.js          # Stores full analysis results
-│   ├── routes/
-│   │   ├── auth.routes.js
-│   │   ├── analysis.routes.js
-│   │   ├── history.routes.js
-│   │   └── resume.routes.js
-│   ├── middleware/
-│   │   └── authMiddleware.js   # JWT verification
-│   ├── schemas/
-│   │   └── analysisSchema.js   # Zod schema + JSON schema export
-│   ├── services/
-│   │   ├── geminiService.js    # Gemini API integration
-│   │   └── pdfService.js       # Puppeteer PDF generation
+├── Frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── features/
+│   │   │   ├── auth/
+│   │   │   │   ├── components/
+│   │   │   │   │   └── Protected.jsx
+│   │   │   │   ├── hooks/
+│   │   │   │   │   └── useAuth.js
+│   │   │   │   ├── pages/
+│   │   │   │   │   ├── Login.jsx
+│   │   │   │   │   └── Register.jsx
+│   │   │   │   ├── services/
+│   │   │   │   │   └── auth.api.js
+│   │   │   │   ├── auth.context.jsx
+│   │   │   │   └── auth.form.scss
+│   │   │   │
+│   │   │   └── interview/
+│   │   │       ├── hooks/
+│   │   │       │   └── useInterview.js
+│   │   │       ├── pages/
+│   │   │       │   ├── Home.jsx
+│   │   │       │   └── Interview.jsx
+│   │   │       ├── services/
+│   │   │       │   └── interview.api.js
+│   │   │       ├── style/
+│   │   │       │   ├── home.scss
+│   │   │       │   └── interview.scss
+│   │   │       └── interview.context.jsx
+│   │   │
+│   │   ├── style/
+│   │   ├── App.jsx
+│   │   ├── app.routes.jsx
+│   │   ├── main.jsx
+│   │   └── style.scss
+│   │
+│   ├── package.json
+│   └── vite.config.js
+│
+├── Backend/
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── database.js
+│   │   │
+│   │   ├── controllers/
+│   │   │   ├── auth.controller.js
+│   │   │   └── interview.controller.js
+│   │   │
+│   │   ├── middlewares/
+│   │   │   ├── auth.middleware.js
+│   │   │   └── file.middleware.js
+│   │   │
+│   │   ├── models/
+│   │   │   ├── user.model.js
+│   │   │   ├── blacklist.model.js
+│   │   │   └── interviewReport.model.js
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── auth.routes.js
+│   │   │   └── interview.routes.js
+│   │   │
+│   │   ├── services/
+│   │   │   └── ai.service.js
+│   │   │
+│   │   └── app.js
+│   │
 │   └── server.js
 │
 └── README.md
